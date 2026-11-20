@@ -83,11 +83,11 @@ final class Shortcode {
 				<ol class="sleepfit__steps">
 					<?php foreach ( $questions as $index => $question ) : ?>
 						<li class="sleepfit__step" data-sleepfit-step>
-							<fieldset class="sleepfit__fieldset">
-								<legend class="sleepfit__legend">
+							<fieldset class="sleepfit__fieldset" aria-labelledby="sleepfit-q-<?php echo esc_attr( $question['id'] ); ?>">
+								<div class="sleepfit__legend" id="sleepfit-q-<?php echo esc_attr( $question['id'] ); ?>">
 									<span class="sleepfit__count"><?php echo esc_html( sprintf( '%1$d / %2$d', $index + 1, $total ) ); ?></span>
 									<?php echo esc_html( $question['legend'] ); ?>
-								</legend>
+								</div>
 								<p class="sleepfit__help"><?php echo esc_html( $question['help'] ); ?></p>
 								<div class="sleepfit__options">
 									<?php foreach ( $question['options'] as $value => $label ) : ?>

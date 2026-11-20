@@ -25,7 +25,7 @@
     {
       "step": "setSiteOptions",
       "options": {
-        "blogname": "Jaserie Sleep - SleepFit demo",
+        "blogname": "SleepFit Demo Store",
         "blogdescription": "A WooCommerce sleep store running the SleepFit finder.",
         "permalink_structure": "/%postname%/"
       }
