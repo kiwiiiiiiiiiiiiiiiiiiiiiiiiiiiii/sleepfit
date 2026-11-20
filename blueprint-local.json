@@ -1,0 +1,35 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "meta": {
+    "title": "SleepFit local demo",
+    "description": "Same store as blueprint.json, using the plugin mounted from this folder by wp-playground start.",
+    "author": "kiwiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
+  },
+  "preferredVersions": { "php": "8.3", "wp": "latest" },
+  "features": { "networking": true },
+  "landingPage": "/find-your-mattress/",
+  "steps": [
+    {
+      "step": "installPlugin",
+      "pluginData": { "resource": "wordpress.org/plugins", "slug": "woocommerce" },
+      "options": { "activate": true, "onError": "throw" }
+    },
+    {
+      "step": "activatePlugin",
+      "pluginPath": "sleepfit/sleepfit.php"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require_once '/wordpress/wp-load.php'; $seed = WP_PLUGIN_DIR . '/sleepfit/demo/seed.php'; if (!file_exists($seed)) { throw new Exception('SleepFit seeder missing at ' . $seed); } return require $seed;"
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "Jaserie Sleep - SleepFit demo",
+        "blogdescription": "A WooCommerce sleep store running the SleepFit finder.",
+        "permalink_structure": "/%postname%/"
+      }
+    },
+    { "step": "login" }
+  ]
+}

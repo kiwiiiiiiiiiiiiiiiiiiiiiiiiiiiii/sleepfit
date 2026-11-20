@@ -1,0 +1,419 @@
+/*
+ * SleepFit styles. Everything is scoped under .sleepfit so the plugin does not
+ * pick a fight with whichever WooCommerce theme is active.
+ */
+.sleepfit {
+	--sf-bg: #f7f6f1;
+	--sf-surface: #ffffff;
+	--sf-fg: #16241d;
+	--sf-muted: #5c6b61;
+	--sf-line: #d3ddd2;
+	--sf-soft: #e8efe6;
+	--sf-accent: #a45132;
+	--sf-accent-ink: #ffffff;
+
+	max-width: 1080px;
+	margin: 2.5rem auto;
+	padding: clamp(1.25rem, 4vw, 3rem);
+	box-sizing: border-box;
+	background: var(--sf-bg);
+	color: var(--sf-fg);
+	border: 1px solid var(--sf-line);
+	font-family: inherit;
+	line-height: 1.5;
+}
+
+.sleepfit *,
+.sleepfit *::before,
+.sleepfit *::after {
+	box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+	.sleepfit {
+		--sf-bg: #111811;
+		--sf-surface: #18211a;
+		--sf-fg: #e9eee6;
+		--sf-muted: #a9b6a8;
+		--sf-line: #2b3a2d;
+		--sf-soft: #1e2b20;
+		--sf-accent: #e08a68;
+		--sf-accent-ink: #111811;
+	}
+}
+
+.sleepfit__intro {
+	max-width: 44ch;
+	margin-bottom: 2rem;
+}
+
+.sleepfit__eyebrow {
+	margin: 0 0 0.6rem;
+	font-size: 0.72rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--sf-accent);
+	font-weight: 700;
+}
+
+.sleepfit__heading {
+	margin: 0 0 0.5rem;
+	font-size: clamp(1.6rem, 3.4vw, 2.35rem);
+	line-height: 1.15;
+	letter-spacing: -0.025em;
+}
+
+.sleepfit__lede,
+.sleepfit__results-note {
+	margin: 0;
+	color: var(--sf-muted);
+	font-size: 0.95rem;
+}
+
+.sleepfit__steps {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.sleepfit__step {
+	margin: 0 0 1.35rem;
+}
+
+.sleepfit__step[hidden],
+.sleepfit__progress[hidden],
+.sleepfit__results[hidden],
+.sleepfit__button[hidden],
+.sleepfit__blurb[hidden] {
+	display: none !important;
+}
+
+.sleepfit__fieldset {
+	margin: 0;
+	padding: 1.25rem clamp(1rem, 3vw, 1.6rem) 1.5rem;
+	border: 1px solid var(--sf-line);
+	background: var(--sf-surface);
+}
+
+.sleepfit__legend {
+	display: block;
+	width: 100%;
+	padding: 0;
+	font-size: 1.15rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.sleepfit__legend:focus-visible {
+	outline: 2px solid var(--sf-accent);
+	outline-offset: 4px;
+}
+
+.sleepfit__count {
+	display: block;
+	margin-bottom: 0.35rem;
+	font-size: 0.7rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--sf-accent);
+}
+
+.sleepfit__help {
+	margin: 0.35rem 0 1.1rem;
+	font-size: 0.88rem;
+	color: var(--sf-muted);
+}
+
+.sleepfit__options {
+	display: grid;
+	gap: 0.6rem;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.sleepfit__option {
+	display: block;
+	position: relative;
+	cursor: pointer;
+}
+
+.sleepfit__option input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.sleepfit__option-label {
+	display: flex;
+	align-items: center;
+	min-height: 3rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--sf-line);
+	background: var(--sf-bg);
+	font-size: 0.95rem;
+	transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.sleepfit__option:hover .sleepfit__option-label {
+	border-color: var(--sf-accent);
+}
+
+.sleepfit__option input:checked + .sleepfit__option-label {
+	border-color: var(--sf-accent);
+	background: var(--sf-soft);
+	font-weight: 600;
+	box-shadow: inset 3px 0 0 var(--sf-accent);
+}
+
+.sleepfit__option input:focus-visible + .sleepfit__option-label {
+	outline: 2px solid var(--sf-accent);
+	outline-offset: 2px;
+}
+
+.sleepfit__progress {
+	margin: 0 0 0.9rem;
+	font-size: 0.78rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--sf-muted);
+}
+
+.sleepfit__controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+	align-items: center;
+}
+
+.sleepfit__button {
+	appearance: none;
+	min-height: 2.9rem;
+	padding: 0.7rem 1.4rem;
+	border: 1px solid var(--sf-accent);
+	background: var(--sf-accent);
+	color: var(--sf-accent-ink);
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.sleepfit__button:hover:not(:disabled) {
+	opacity: 0.85;
+}
+
+.sleepfit__button:disabled {
+	opacity: 0.55;
+	cursor: progress;
+}
+
+.sleepfit__button:focus-visible {
+	outline: 2px solid var(--sf-fg);
+	outline-offset: 2px;
+}
+
+.sleepfit__button--back {
+	background: transparent;
+	color: var(--sf-fg);
+}
+
+.sleepfit__status {
+	min-height: 1.2rem;
+	margin: 0.7rem 0 0;
+	font-size: 0.88rem;
+	color: var(--sf-accent);
+}
+
+.sleepfit__notice {
+	padding: 0.75rem 1rem;
+	border-left: 3px solid var(--sf-accent);
+	background: var(--sf-soft);
+	font-size: 0.9rem;
+}
+
+.sleepfit__results {
+	margin-top: 2rem;
+	padding-top: 1.75rem;
+	border-top: 1px solid var(--sf-line);
+}
+
+.sleepfit__results:focus {
+	outline: none;
+}
+
+.sleepfit__results:focus-visible {
+	outline: 2px solid var(--sf-accent);
+	outline-offset: 4px;
+}
+
+.sleepfit__results-head {
+	margin-bottom: 1.25rem;
+}
+
+.sleepfit__results-title {
+	margin: 0 0 0.35rem;
+	font-size: 1.3rem;
+}
+
+.sleepfit__cards {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+.sleepfit__card {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	border: 1px solid var(--sf-line);
+	background: var(--sf-surface);
+}
+
+.sleepfit__media {
+	aspect-ratio: 4 / 3;
+	margin: 0;
+	background: var(--sf-soft);
+	overflow: hidden;
+}
+
+.sleepfit__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.sleepfit__card-body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	padding: 1.1rem 1.2rem 1.35rem;
+}
+
+.sleepfit__band {
+	display: flex;
+	align-items: baseline;
+	gap: 0.55rem;
+	margin: 0 0 0.55rem;
+}
+
+.sleepfit__band [data-slot='score'] {
+	font-size: 1.45rem;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	color: var(--sf-accent);
+}
+
+.sleepfit__band-label {
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--sf-muted);
+}
+
+.sleepfit__name {
+	margin: 0 0 0.3rem;
+	font-size: 1.12rem;
+	line-height: 1.3;
+}
+
+.sleepfit__name a {
+	color: inherit;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+}
+
+.sleepfit__name a:hover,
+.sleepfit__name a:focus-visible {
+	border-bottom-color: var(--sf-accent);
+}
+
+.sleepfit__price {
+	margin: 0 0 0.8rem;
+	color: var(--sf-muted);
+	font-size: 0.92rem;
+}
+
+.sleepfit__blurb {
+	margin: 0 0 0.9rem;
+	padding: 0.7rem 0.9rem;
+	background: var(--sf-soft);
+	border-left: 2px solid var(--sf-accent);
+	font-size: 0.92rem;
+}
+
+.sleepfit__reasons {
+	list-style: none;
+	margin: 0 0 1.2rem;
+	padding: 0;
+	display: grid;
+	gap: 0.45rem;
+	font-size: 0.9rem;
+}
+
+.sleepfit__reasons li {
+	position: relative;
+	padding-left: 1.2rem;
+	color: var(--sf-muted);
+}
+
+.sleepfit__reasons li::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.55em;
+	width: 0.5rem;
+	height: 0.5rem;
+	border: 1px solid var(--sf-accent);
+	border-radius: 50%;
+}
+
+.sleepfit__again {
+	display: inline-flex;
+	align-self: flex-start;
+	margin-top: auto;
+	padding: 0.55rem 0;
+	border-bottom: 1px solid var(--sf-accent);
+	color: var(--sf-accent);
+	font-size: 0.85rem;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.sleepfit-admin__card {
+	max-width: 900px;
+	margin: 1.25rem 0;
+	padding: 1rem 1.5rem 1.5rem;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+}
+
+.sleepfit-admin__bar-row {
+	display: grid;
+	grid-template-columns: 110px 1fr 40px;
+	gap: 0.75rem;
+	align-items: center;
+	margin: 0.4rem 0;
+	font-size: 0.85rem;
+}
+
+.sleepfit-admin__bar {
+	display: block;
+	height: 8px;
+	background: #f0f0f1;
+}
+
+.sleepfit-admin__bar > span {
+	display: block;
+	height: 100%;
+	background: #a45132;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sleepfit *,
+	.sleepfit *::before,
+	.sleepfit *::after {
+		transition-duration: 0.01ms !important;
+	}
+}
