@@ -277,6 +277,8 @@
 	overflow: hidden;
 }
 
+.sleepfit__media:empty { display: none; }
+
 .sleepfit__media img {
 	display: block;
 	width: 100%;

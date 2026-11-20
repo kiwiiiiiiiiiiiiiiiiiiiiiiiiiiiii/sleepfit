@@ -149,7 +149,15 @@ function sleepfit_demo_seed() {
 		$product->set_menu_order( $index );
 		$product->set_stock_status( 'instock' );
 
-		$image_id = sleepfit_demo_image( $data['name'], $data['color'], $index );
+		$sku         = 'SLEEPFIT-DEMO-' . str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT );
+		$existing_id = function_exists( 'wc_get_product_id_by_sku' ) ? wc_get_product_id_by_sku( $sku ) : 0;
+
+		if ( $existing_id ) {
+			wp_delete_post( $existing_id, true );
+		}
+
+		$product->set_sku( $sku );
+		$image_id = sleepfit_demo_image( $data['name'], $index );
 
 		if ( $image_id ) {
 			$product->set_image_id( $image_id );
@@ -219,47 +227,57 @@ function sleepfit_demo_seed() {
  * @param int    $index Plate number.
  * @return int Attachment id.
  */
-function sleepfit_demo_image( $name, $color, $index ) {
-	$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="' . esc_attr( $name ) . '">'
-		. '<rect width="800" height="600" fill="#efece4"/>'
-		. '<rect x="0" y="0" width="800" height="10" fill="' . $color . '"/>'
-		. '<text x="48" y="86" font-family="Georgia,serif" font-size="34" fill="#16241d">' . esc_html( $name ) . '</text>'
-		. '<text x="48" y="120" font-family="monospace" font-size="16" letter-spacing="4" fill="#5c6b61">SLEEP / ' . str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) . '</text>'
-		. '<rect x="120" y="290" width="560" height="160" rx="12" fill="#ffffff" stroke="#c9d2c6" stroke-width="4"/>'
-		. '<rect x="160" y="240" width="180" height="70" rx="10" fill="' . $color . '" opacity="0.75"/>'
-		. '<rect x="380" y="240" width="180" height="70" rx="10" fill="' . $color . '" opacity="0.55"/>'
-		. '<path d="M120 360 H680" stroke="#c9d2c6" stroke-width="3"/>'
-		. '<rect x="120" y="450" width="560" height="18" fill="' . $color . '"/>'
-		. '</svg>';
+function sleepfit_demo_image( $name, $index ) {
+	$filename = 'sleepfit-' . str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) . '.svg';
+	$source   = SLEEPFIT_DIR . 'assets/demo/' . $filename;
 
-	$upload = wp_upload_bits( 'sleepfit-' . ( $index + 1 ) . '.svg', null, $svg );
-
-	if ( ! empty( $upload['error'] ) ) {
+	if ( ! file_exists( $source ) ) {
 		return 0;
 	}
 
-	$attachment_id = wp_insert_attachment(
+	// Copy the committed SVG into uploads so WordPress can build a normal
+	// attachment URL. wp_upload_bits() rejects SVG on some installs.
+	$uploads = wp_upload_dir();
+	$subdir  = gmdate( 'Y/m' );
+	$dir     = $uploads['basedir'] . '/' . $subdir;
+
+	if ( ! is_dir( $dir ) && ! wp_mkdir_p( $dir ) ) {
+		return 0;
+	}
+
+	$target = $dir . '/' . $filename;
+
+	if ( ! copy( $source, $target ) ) {
+		return 0;
+	}
+
+	$relative = $subdir . '/' . $filename;
+	$url      = $uploads['baseurl'] . '/' . $relative;
+	$id       = wp_insert_attachment(
 		array(
-			'guid'           => $upload['url'],
+			'guid'           => $url,
 			'post_mime_type' => 'image/svg+xml',
 			'post_title'     => $name,
 			'post_status'    => 'inherit',
 		),
-		$upload['file']
+		$target
 	);
 
-	if ( $attachment_id ) {
-		wp_update_attachment_metadata(
-			$attachment_id,
-			array(
-				'width'  => 800,
-				'height' => 600,
-				'file'   => str_replace( wp_upload_dir()['basedir'] . '/', '', $upload['file'] ),
-			)
-		);
+	if ( ! $id ) {
+		return 0;
 	}
 
-	return $attachment_id;
+	update_post_meta( $id, '_wp_attached_file', $relative );
+	wp_update_attachment_metadata(
+		$id,
+		array(
+			'width'  => 800,
+			'height' => 600,
+			'file'   => $relative,
+		)
+	);
+
+	return $id;
 }
 
 return sleepfit_demo_seed();

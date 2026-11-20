@@ -5,8 +5,9 @@
  * normal POST produces the same result cards. Here we only add the step-by-step
  * flow and swap the page reload for a fetch to the public REST endpoint.
  *
- * No cookies are sent on that fetch, so a logged-in merchant with a stale
- * nonce still gets a match instead of a 401 from WP's cookie auth check.
+ * The endpoint is public and does not check a nonce, so the fetch uses
+ * same-origin cookies. Omitting them breaks sites whose auth layer redirects
+ * cookieless requests (WordPress Playground is one).
  */
 ( function () {
 	'use strict';
@@ -224,7 +225,7 @@
 
 			fetch( config.restUrl, {
 				method: 'POST',
-				credentials: 'omit',
+				credentials: 'same-origin',
 				headers: {
 					'Content-Type': 'application/json',
 					Accept: 'application/json'

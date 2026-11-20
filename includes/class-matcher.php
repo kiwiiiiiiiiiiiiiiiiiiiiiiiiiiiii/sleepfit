@@ -244,6 +244,16 @@ final class Matcher {
 	public static function to_payload( $product, $attributes, $score, $reasons, $blurb ) {
 		$image_id  = $product->get_image_id();
 		$image     = $image_id ? wp_get_attachment_image_src( $image_id, 'woocommerce_thumbnail' ) : false;
+
+		if ( ! $image && $image_id ) {
+			// SVGs have no generated thumbnail size; fall back to the original.
+			$full = wp_get_attachment_url( $image_id );
+
+			if ( $full ) {
+				$image = array( $full, 800, 600 );
+			}
+		}
+
 		$image_alt = $image_id ? get_post_meta( $image_id, '_wp_attachment_image_alt', true ) : '';
 
 		return array(
